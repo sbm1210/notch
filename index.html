@@ -43,6 +43,7 @@ body{font-family:'Noto Sans KR',system-ui,sans-serif;}
   white-space:nowrap;}
 .wt-sub .wt-dot{margin:0 1px;opacity:.6;}
 /* 세그먼트 */
+.wt-warn{font-size:12px;line-height:1.5;color:#ffd9a0;background:rgba(255,154,60,.1);border:1px solid rgba(255,154,60,.3);border-radius:11px;padding:10px 13px;margin-bottom:12px;}
 .wt-seg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:13px;}
 .wt-seg-btn{position:relative;padding:10px;border-radius:12px;border:1.5px solid var(--bd);
   background:var(--s1);color:var(--mut);font-family:inherit;font-size:14.5px;font-weight:700;
@@ -119,6 +120,13 @@ body{font-family:'Noto Sans KR',system-ui,sans-serif;}
 /* 큐 */
 .wt-cue{margin-top:11px;background:rgba(61,139,255,.08);border-left:3px solid var(--blue);border-radius:0 9px 9px 0;
   padding:9px 12px;font-size:12.5px;color:#bcd2ee;line-height:1.5;}
+.wt-setup{display:flex;align-items:flex-start;gap:8px;cursor:pointer;margin-bottom:11px;
+  background:rgba(155,225,93,.07);border:1px solid rgba(155,225,93,.2);border-radius:10px;padding:9px 12px;}
+.wt-setup-label{display:inline-flex;align-items:center;gap:4px;color:var(--lime);font-size:11.5px;font-weight:700;flex-shrink:0;
+  background:rgba(155,225,93,.12);border-radius:6px;padding:2px 7px;margin-top:1px;}
+.wt-setup-text{font-size:12.5px;color:#d6e7c4;line-height:1.5;white-space:pre-wrap;}
+.wt-set-setup-label{display:block;font-size:11.5px;font-weight:700;color:var(--lime);margin-bottom:6px;}
+.wt-set-setup-label i{font-style:normal;color:var(--mut);font-weight:500;font-size:10.5px;}
 .wt-memo{margin-top:11px;}
 .wt-memo-label{display:block;font-size:12px;font-weight:700;color:var(--lime);margin-bottom:6px;}
 .wt-memo-in{width:100%;background:var(--bg);border:1px solid var(--bd);border-radius:10px;color:#fff;
@@ -497,20 +505,29 @@ const clone = o => typeof structuredClone === "function" ? structuredClone(o) : 
 /* ── 저장 (localStorage, 안 되면 메모리 폴백) ── */
 const SKEY = "notch-tracker-v1";
 const _mem = {};
+let STORAGE_OK = true;
+// 부팅 시 localStorage 실제 동작 여부 점검
+(function probe() {
+  try {
+    localStorage.setItem("__notch_probe__", "1");
+    if (localStorage.getItem("__notch_probe__") !== "1") STORAGE_OK = false;
+    localStorage.removeItem("__notch_probe__");
+  } catch (e) {
+    STORAGE_OK = false;
+  }
+})();
 function loadState() {
   try {
     const r = localStorage.getItem(SKEY);
-    return r ? JSON.parse(r) : null;
-  } catch (e) {
-    return _mem[SKEY] || null;
-  }
+    if (r) return JSON.parse(r);
+  } catch (e) {}
+  return _mem[SKEY] || null;
 }
 function saveState(o) {
+  _mem[SKEY] = o; // 항상 메모리에도 보관
   try {
     localStorage.setItem(SKEY, JSON.stringify(o));
-  } catch (e) {
-    _mem[SKEY] = o;
-  }
+  } catch (e) {}
 }
 
 /* ── 아이콘 (내장 SVG) ── */
@@ -660,32 +677,29 @@ const TEMPLATES = {
     note: "횟수 고정 · 세트 진행될수록 중량 ↑ · 3세트가 메인, 1~2세트는 워밍업. (삼두는 가슴·어깨 미는 동작에서 같이 발달돼서 제외)",
     ex: [{
       n: "스쿼트",
-      set: [],
-      s: [["20", "5"], ["40", "5"], ["60", "5"]],
+      s: [["40", "5"], ["60", "5"], ["80", "5"]],
       cue: ""
     }, {
       n: "체스트 프레스",
-      set: [["의자", "6"], ["팔", "8"]],
-      s: [["20", "5"], ["40", "5"], ["60", "5"]],
+      setup: "의자 6 / 팔 8",
+      s: [["50", "5"], ["70", "5"], ["90", "5"]],
       cue: ""
     }, {
       n: "랫 풀 다운",
-      set: [["무릎패드", "5"]],
-      s: [["10", "5"], ["20", "5"], ["30", "5"]],
-      cue: "무릎 위에서 5칸"
+      setup: "무릎패드 4",
+      s: [["25", "5"], ["35", "5"], ["45", "5"]],
+      cue: "견갑골 → 팔 순서로 / 팔보다 견갑골에 집중 / 흉곽 닫기 (단, 너무 앞으로 말리지 않게 — 앞으로 말리는 게 뒤로 꺾이는 것보다 위험)"
     }, {
       n: "하이퍼 익스텐션",
-      set: [["거치", "8"]],
-      s: [["체중", "10"], ["체중", "10"], ["체중", "10"]],
+      setup: "거치 8",
+      s: [["체중", "10"], ["5", "8"], ["5", "8"]],
       cue: "힘들 때쯤 끝내기"
     }, {
       n: "스탠딩 오버헤드 프레스",
-      set: [],
       s: [["10", "5"], ["20", "5"], ["30", "5"]],
-      cue: ""
+      cue: "바가 이마 지나는 순간 몸통을 밀어넣기 / 주먹이 어깨 관절보다 너무 뒤로 빠지지 않게"
     }, {
       n: "덤벨 컬",
-      set: [],
       s: [["2", "8"], ["4", "8"], ["6", "8"]],
       cue: ""
     }]
@@ -695,32 +709,29 @@ const TEMPLATES = {
     note: "데드리프트 메인 데이. 키워드만 잘 보면 금방 기억돼요.",
     ex: [{
       n: "핀 데드리프트",
-      set: [],
+      setup: "거치대 16 / 안전바 12",
       s: [["20", "5"], ["40", "5"], ["60", "5"]],
       cue: "중심은 미들풋 / 생각보다 앞으로 / 뒤 다리 텐션 느껴지게 (안정성↑)"
     }, {
       n: "시티드 로우 머신",
-      set: [["의자", "4"]],
+      setup: "의자 4",
       s: [["20", "5"], ["40", "5"], ["60", "5"]],
       cue: "견갑골 → 팔 순서로 당기고 늘리기"
     }, {
       n: "벤치 프레스",
-      set: [],
       s: [["20", "5"], ["40", "5"], ["60", "5"]],
       cue: "밀 때 견갑골 벌어지지 않게 / 팔꿈치 너무 바짝 펴지 않게"
     }, {
       n: "레그 프레스",
-      set: [["의자", "2"]],
+      setup: "의자 2",
       s: [["40", "5"], ["80", "5"], ["120", "5"]],
       cue: "골반 말리지 않게 / 천골이 패드에 밀착되게"
     }, {
       n: "스미스 오버헤드 프레스",
-      set: [],
       s: [["빈바", "5"], ["10", "5"], ["20", "5"]],
       cue: "견봉보다 팔꿈치가 뒤로 가지 않게"
     }, {
       n: "바벨 컬",
-      set: [],
       s: [["10", "8"], ["15", "8"], ["20", "8"]],
       cue: ""
     }]
@@ -729,11 +740,8 @@ const TEMPLATES = {
 const buildProgram = key => TEMPLATES[key].ex.map(e => ({
   n: e.n,
   cue: e.cue,
+  setup: e.setup || "",
   memo: "",
-  sv: e.set.map(([label, val]) => ({
-    label,
-    val
-  })),
   sets: e.s.map(([w, r]) => ({
     tw: w,
     tr: r,
@@ -749,6 +757,20 @@ const todayStr = () => {
 };
 const fmt = s => `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
 const SAVED = loadState() || {};
+// 구버전 호환: 저장된 progs 에 sv(머신 세팅 배열)가 있으면 setup 텍스트로 이전
+if (SAVED.progs) {
+  try {
+    ["A", "B"].forEach(pk => {
+      (SAVED.progs[pk] || []).forEach(e => {
+        if (Array.isArray(e.sv) && e.sv.length) {
+          const txt = e.sv.map(m => `${m.label} ${m.val}`).join(" / ");
+          if (!e.setup) e.setup = txt;
+        }
+        delete e.sv;
+      });
+    });
+  } catch (err) {}
+}
 function App() {
   const [active, setActive] = useState(SAVED.active || "A");
   const [date] = useState(todayStr());
@@ -761,7 +783,7 @@ function App() {
   const [showHist, setShowHist] = useState(false);
   const [showSet, setShowSet] = useState(false);
   const [toast, setToast] = useState("");
-  const [rest, setRest] = useState(60);
+  const [rest, setRest] = useState(80);
   const [run, setRun] = useState(false);
   const tick = useRef(null);
 
@@ -813,20 +835,13 @@ function App() {
       }
     });
     if (willDone) {
-      setRest(60);
-      setRun(true);
-    }
-  };
-  const setMachineCfg = (pk, exName, label, v) => {
-    setProgs(prev => {
-      const next = clone(prev);
-      const ex = next[pk].find(e => e.n === exName);
-      if (ex) {
-        const m = ex.sv.find(s => s.label === label);
-        if (m) m.val = v;
+      const last = progs[active][ei].sets.length - 1;
+      const restFor = si === 0 ? 80 : si === 1 ? 110 : 0;
+      if (si < last && restFor > 0) {
+        setRest(restFor);
+        setRun(true);
       }
-      return next;
-    });
+    }
   };
   const setCueCfg = (pk, exName, v) => {
     setProgs(prev => {
@@ -847,6 +862,14 @@ function App() {
   const setMemo = (ei, v) => upd(p => {
     p[ei].memo = v;
   });
+  const setSetupCfg = (pk, exName, v) => {
+    setProgs(prev => {
+      const next = clone(prev);
+      const ex = next[pk].find(e => e.n === exName);
+      if (ex) ex.setup = v;
+      return next;
+    });
+  };
   const program = progs[active];
   const totalSets = program.reduce((a, e) => a + e.sets.length, 0);
   const doneSets = program.reduce((a, e) => a + e.sets.filter(s => s.done).length, 0);
@@ -858,7 +881,7 @@ function App() {
       ex: program.map(e => ({
         n: e.n,
         memo: e.memo || "",
-        sv: e.sv.map(m => `${m.label} ${m.val}`),
+        setup: e.setup || "",
         sets: e.sets.map(s => ({
           w: s.w || s.tw,
           r: s.r || s.tr,
@@ -911,7 +934,9 @@ function App() {
   }, /*#__PURE__*/React.createElement(Settings, {
     size: 19,
     strokeWidth: 2.2
-  }))), /*#__PURE__*/React.createElement("div", {
+  }))), !STORAGE_OK && /*#__PURE__*/React.createElement("div", {
+    className: "wt-warn"
+  }, "\u26A0\uFE0F \uC774 \uBE0C\uB77C\uC6B0\uC800\uC5D0\uC11C \uC800\uC7A5\uC774 \uB9C9\uD600 \uC788\uC5B4\uC694. \uC0AC\uD30C\uB9AC \uC0AC\uC0DD\uD65C \uBCF4\uD638 \uBAA8\uB4DC\uB97C \uB044\uAC70\uB098, \uD648 \uD654\uBA74\uC5D0 \uCD94\uAC00\uD55C \uC571\uC73C\uB85C \uC5F4\uBA74 \uAE30\uB85D\uC774 \uC720\uC9C0\uB429\uB2C8\uB2E4."), /*#__PURE__*/React.createElement("div", {
     className: "wt-seg"
   }, ["A", "B"].map(k => /*#__PURE__*/React.createElement("button", {
     key: k,
@@ -955,12 +980,12 @@ function App() {
       strokeWidth: 2.2
     })), /*#__PURE__*/React.createElement("span", {
       className: "wt-ex-name"
-    }, e.n), e.sv.length > 0 && /*#__PURE__*/React.createElement("span", {
+    }, e.n), e.setup && /*#__PURE__*/React.createElement("span", {
       className: "wt-set-pill"
     }, /*#__PURE__*/React.createElement(Settings2, {
       size: 11,
       strokeWidth: 2.5
-    }), e.sv.map(m => `${m.label} ${m.val}`).join(" · ")), exDone && /*#__PURE__*/React.createElement(Check, {
+    }), e.setup.split("\n")[0]), exDone && /*#__PURE__*/React.createElement(Check, {
       size: 15,
       strokeWidth: 3,
       className: "wt-ex-done"
@@ -1051,7 +1076,7 @@ function App() {
     className: "tb red",
     onClick: () => {
       setRun(false);
-      setRest(60);
+      setRest(80);
     }
   }, /*#__PURE__*/React.createElement(Square, {
     size: 15
@@ -1076,7 +1101,7 @@ function App() {
     className: "wt-modal-body"
   }, /*#__PURE__*/React.createElement("div", {
     className: "wt-set-hint"
-  }, "\uBA38\uC2E0 \uCE78\uC218 \xB7 \uC138\uD2B8\uBCC4 \uAE30\uBCF8\uAC12 \xB7 \uCF54\uCE58 \uD0A4\uC6CC\uB4DC\uB97C \uC6B4\uB3D9\uB9C8\uB2E4 \uC800\uC7A5\uD574\uB46C\uC694. \uBC14\uAFB8\uBA74 \uC790\uB3D9 \uC801\uC6A9\uB429\uB2C8\uB2E4. (\uD53C\uB4DC\uBC31\uC774 \uBC14\uB00C\uBA74 \uC5EC\uAE30\uC11C \uC218\uC815)"), ["A", "B"].map(pk => /*#__PURE__*/React.createElement("div", {
+  }, "\uC14B\uC5C5(\uAE30\uAD6C \uC138\uD305)\xB7\uC138\uD2B8\uBCC4 \uAE30\uBCF8\uAC12\xB7\uCF54\uCE58 \uD0A4\uC6CC\uB4DC\uB97C \uC6B4\uB3D9\uB9C8\uB2E4 \uC800\uC7A5\uD574\uB46C\uC694. \uBC14\uAFB8\uBA74 \uC790\uB3D9 \uC801\uC6A9\uB429\uB2C8\uB2E4. (\uD53C\uB4DC\uBC31\uC774 \uBC14\uB00C\uBA74 \uC5EC\uAE30\uC11C \uC218\uC815)"), ["A", "B"].map(pk => /*#__PURE__*/React.createElement("div", {
     key: pk,
     className: "wt-set-group"
   }, /*#__PURE__*/React.createElement("div", {
@@ -1089,16 +1114,16 @@ function App() {
   }, /*#__PURE__*/React.createElement(Dumbbell, {
     size: 14,
     strokeWidth: 2.2
-  }), " ", e.n), e.sv.length > 0 && /*#__PURE__*/React.createElement("div", {
-    className: "wt-set-mfields"
-  }, e.sv.map(m => /*#__PURE__*/React.createElement("label", {
-    key: m.label,
-    className: "wt-mfield"
-  }, /*#__PURE__*/React.createElement("span", null, m.label), /*#__PURE__*/React.createElement("input", {
-    value: m.val,
-    inputMode: "numeric",
-    onChange: ev => setMachineCfg(pk, e.n, m.label, ev.target.value)
-  }), /*#__PURE__*/React.createElement("em", null, "\uCE78")))), /*#__PURE__*/React.createElement("div", {
+  }), " ", e.n), /*#__PURE__*/React.createElement("div", {
+    className: "wt-set-cue"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "wt-set-setup-label"
+  }, "\uD83D\uDD27 \uC14B\uC5C5 ", /*#__PURE__*/React.createElement("i", null, "(\uC758\uC790/\uAC70\uCE58 \uCE78\uC218, \uC548\uC804\uBC14\xB7\uC2DC\uC791 \uB192\uC774, \uADF8\uB9BD \uB4F1)")), /*#__PURE__*/React.createElement("textarea", {
+    value: e.setup,
+    rows: 2,
+    placeholder: "\uC608: \uC758\uC790 6 / \uD314 8 / \uADF8\uB9BD \uAC80\uC9C0 \uB9C1",
+    onChange: ev => setSetupCfg(pk, e.n, ev.target.value)
+  })), /*#__PURE__*/React.createElement("div", {
     className: "wt-set-def"
   }, /*#__PURE__*/React.createElement("span", {
     className: "wt-set-def-label"
@@ -1157,7 +1182,7 @@ function App() {
     className: "wt-hrow"
   }, /*#__PURE__*/React.createElement("span", {
     className: "wt-hname"
-  }, x.n, x.sv.length ? ` (${x.sv.join(", ")})` : ""), /*#__PURE__*/React.createElement("span", {
+  }, x.n, x.setup ? ` (${x.setup.split("\n")[0]})` : ""), /*#__PURE__*/React.createElement("span", {
     className: "wt-hsets"
   }, x.sets.map((s, j) => /*#__PURE__*/React.createElement("em", {
     key: j,
