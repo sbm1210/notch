@@ -78,6 +78,13 @@ body{font-family:'Noto Sans KR',system-ui,sans-serif;}
   border-radius:11px;padding:11px 13px;margin-bottom:16px;}
 .wt-set-group{margin-bottom:18px;}
 .wt-set-group-h{font-size:13px;font-weight:700;color:var(--blue);margin-bottom:9px;letter-spacing:.3px;}
+.wt-io-desc{font-size:12px;color:var(--mut);line-height:1.55;margin-bottom:10px;}
+.wt-io-btns{display:flex;gap:8px;}
+.wt-io-box{margin-top:11px;}
+.wt-io-label{font-size:11.5px;color:var(--lime);font-weight:600;margin-bottom:6px;}
+.wt-io-box textarea{width:100%;background:var(--bg);border:1px solid var(--bd);border-radius:10px;color:#cfe0f5;
+  font-family:monospace;font-size:11px;line-height:1.4;padding:9px 11px;resize:vertical;outline:none;word-break:break-all;}
+.wt-io-box textarea:focus{border-color:var(--blue);}
 .wt-set-machine{background:var(--s1);border:1px solid var(--bd);border-radius:12px;padding:12px 13px;margin-bottom:9px;}
 .wt-set-mname{display:flex;align-items:center;gap:6px;font-size:13.5px;font-weight:700;margin-bottom:10px;color:var(--tx);}
 .wt-set-mname svg{color:var(--lime);}
@@ -782,6 +789,8 @@ function App() {
   const [history, setHistory] = useState(Array.isArray(SAVED.history) ? SAVED.history : []);
   const [showHist, setShowHist] = useState(false);
   const [showSet, setShowSet] = useState(false);
+  const [ioMode, setIoMode] = useState("none");
+  const [ioText, setIoText] = useState("");
   const [toast, setToast] = useState("");
   const [rest, setRest] = useState(80);
   const [run, setRun] = useState(false);
@@ -815,6 +824,33 @@ function App() {
     setToast(m);
     setTimeout(() => setToast(""), 1800);
   };
+  const enc = s => btoa(unescape(encodeURIComponent(s)));
+  const dec = s => decodeURIComponent(escape(atob(s)));
+  const doExport = () => {
+    setIoText(enc(JSON.stringify({
+      active,
+      progs,
+      history
+    })));
+    setIoMode("export");
+  };
+  const doImportOpen = () => {
+    setIoText("");
+    setIoMode("import");
+  };
+  const doImportApply = () => {
+    try {
+      const o = JSON.parse(dec(ioText.trim()));
+      if (o.progs) setProgs(o.progs);
+      if (o.active) setActive(o.active);
+      if (Array.isArray(o.history)) setHistory(o.history);
+      setIoMode("none");
+      setIoText("");
+      flash("가져오기 완료 ✅ 기록·설정 복원됨");
+    } catch (e) {
+      flash("코드가 올바르지 않아요. 다시 확인해 주세요");
+    }
+  };
   const upd = useCallback(fn => {
     setProgs(prev => {
       const next = clone(prev);
@@ -835,12 +871,9 @@ function App() {
       }
     });
     if (willDone) {
-      const last = progs[active][ei].sets.length - 1;
-      const restFor = si === 0 ? 80 : si === 1 ? 110 : 0;
-      if (si < last && restFor > 0) {
-        setRest(restFor);
-        setRun(true);
-      }
+      const restFor = si === 0 ? 80 : 110;
+      setRest(restFor);
+      setRun(true);
     }
   };
   const setCueCfg = (pk, exName, v) => {
@@ -1153,7 +1186,49 @@ function App() {
     rows: 2,
     placeholder: "\uC608: \uACAC\uAC11\uACE8 \uBC8C\uC5B4\uC9C0\uC9C0 \uC54A\uAC8C / \uD314\uAFC8\uCE58 \uB108\uBB34 \uD3B4\uC9C0 \uC54A\uAC8C",
     onChange: ev => setCueCfg(pk, e.n, ev.target.value)
-  }))))))))), showHist && /*#__PURE__*/React.createElement("div", {
+  })))))), /*#__PURE__*/React.createElement("div", {
+    className: "wt-set-group"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "wt-set-group-h"
+  }, "\uB370\uC774\uD130 \uBC31\uC5C5 / \uAE30\uAE30 \uC774\uC804"), /*#__PURE__*/React.createElement("div", {
+    className: "wt-io-desc"
+  }, "\uC0AC\uD30C\uB9AC \u2194 \uD648 \uD654\uBA74 \uC571\uC740 \uC800\uC7A5\uACF5\uAC04\uC774 \uBD84\uB9AC\uB3FC\uC694. \uD55C\uCABD\uC5D0\uC11C \uB0B4\uBCF4\uB0B4 \uCF54\uB4DC\uB97C \uBCF5\uC0AC\uD558\uACE0, \uB2E4\uB978 \uCABD\uC5D0\uC11C \uAC00\uC838\uC624\uAE30\uB85C \uBD99\uC5EC\uB123\uC73C\uBA74 \uAE30\uB85D\xB7\uC124\uC815\uC774 \uADF8\uB300\uB85C \uC62E\uACA8\uC838\uC694."), /*#__PURE__*/React.createElement("div", {
+    className: "wt-io-btns"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "wt-act",
+    onClick: doExport
+  }, /*#__PURE__*/React.createElement(Save, {
+    size: 15
+  }), " \uB0B4\uBCF4\uB0B4\uAE30"), /*#__PURE__*/React.createElement("button", {
+    className: "wt-act",
+    onClick: doImportOpen
+  }, /*#__PURE__*/React.createElement(RotateCcw, {
+    size: 15
+  }), " \uAC00\uC838\uC624\uAE30")), ioMode === "export" && /*#__PURE__*/React.createElement("div", {
+    className: "wt-io-box"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "wt-io-label"
+  }, "\uC774 \uCF54\uB4DC\uB97C \uAE38\uAC8C \uB20C\uB7EC \uC804\uCCB4 \uBCF5\uC0AC\uD558\uC138\uC694"), /*#__PURE__*/React.createElement("textarea", {
+    readOnly: true,
+    value: ioText,
+    rows: 4,
+    onFocus: e => e.target.select()
+  })), ioMode === "import" && /*#__PURE__*/React.createElement("div", {
+    className: "wt-io-box"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "wt-io-label"
+  }, "\uBCF5\uC0AC\uD55C \uCF54\uB4DC\uB97C \uBD99\uC5EC\uB123\uACE0 \uC801\uC6A9\uD558\uC138\uC694"), /*#__PURE__*/React.createElement("textarea", {
+    value: ioText,
+    rows: 4,
+    placeholder: "\uC5EC\uAE30\uC5D0 \uBD99\uC5EC\uB123\uAE30",
+    onChange: e => setIoText(e.target.value)
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "wt-act save",
+    style: {
+      marginTop: 8
+    },
+    onClick: doImportApply
+  }, "\uC801\uC6A9 (\uAE30\uC874 \uB370\uC774\uD130 \uB36E\uC5B4\uC500)")))))), showHist && /*#__PURE__*/React.createElement("div", {
     className: "wt-modal",
     onClick: () => setShowHist(false)
   }, /*#__PURE__*/React.createElement("div", {
