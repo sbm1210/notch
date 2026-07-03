@@ -932,7 +932,7 @@ function App() {
   const enc = s => btoa(unescape(encodeURIComponent(s)));
   const dec = s => decodeURIComponent(escape(atob(s)));
   const doExport = () => {
-    setIoText(enc(JSON.stringify({
+    const code = enc(JSON.stringify({
       active,
       progs,
       names,
@@ -940,8 +940,34 @@ function App() {
       rests,
       user,
       history
-    })));
+    }));
+    setIoText(code);
     setIoMode("export");
+    const copyFallback = () => {
+      try {
+        const ta = document.createElement("textarea");
+        ta.value = code;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(code).then(() => {
+        flash("클립보드에 복사됐어요 📋");
+      }).catch(() => {
+        flash(copyFallback() ? "클립보드에 복사됐어요 📋" : "복사에 실패했어요. 직접 복사해 주세요");
+      });
+    } else {
+      flash(copyFallback() ? "클립보드에 복사됐어요 📋" : "복사에 실패했어요. 직접 복사해 주세요");
+    }
   };
   const doImportOpen = () => {
     setIoText("");
