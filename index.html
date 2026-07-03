@@ -44,10 +44,11 @@ body{font-family:'Noto Sans KR',system-ui,sans-serif;}
 .wt-sub .wt-dot{margin:0 1px;opacity:.6;}
 /* 세그먼트 */
 .wt-warn{font-size:12px;line-height:1.5;color:#ffd9a0;background:rgba(255,154,60,.1);border:1px solid rgba(255,154,60,.3);border-radius:11px;padding:10px 13px;margin-bottom:12px;}
-.wt-seg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:13px;}
-.wt-seg-btn{position:relative;padding:10px;border-radius:12px;border:1.5px solid var(--bd);
-  background:var(--s1);color:var(--mut);font-family:inherit;font-size:14.5px;font-weight:700;
-  cursor:pointer;transition:.18s;}
+.wt-seg{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:13px;}
+.wt-seg-btn{position:relative;padding:10px 20px 10px 8px;border-radius:12px;border:1.5px solid var(--bd);
+  background:var(--s1);color:var(--mut);font-family:inherit;font-size:14px;font-weight:700;
+  cursor:pointer;transition:.18s;overflow:hidden;}
+.wt-seg-txt{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .wt-seg-btn.on{border-color:var(--blue);background:linear-gradient(180deg,rgba(61,139,255,.18),rgba(61,139,255,.05));
   color:#fff;box-shadow:0 0 0 1px rgba(61,139,255,.4),0 6px 20px -8px rgba(61,139,255,.6);}
 .wt-seg-chk{position:absolute;top:6px;right:8px;color:var(--blue);}
@@ -152,6 +153,48 @@ body{font-family:'Noto Sans KR',system-ui,sans-serif;}
 .wt-act.save{background:linear-gradient(180deg,var(--blue),var(--blue2));border-color:var(--blue);color:#fff;
   box-shadow:0 8px 22px -10px rgba(61,139,255,.8);}
 .wt-act:active{transform:scale(.97);}
+/* 운동 이름 편집 · 삭제 (카드 안) */
+.wt-ex-edit{display:flex;align-items:center;gap:8px;margin:4px 0 12px;}
+.wt-ex-name-in{flex:1;min-width:0;padding:9px 11px;border-radius:10px;border:1px solid var(--bd);
+  background:var(--s2);color:var(--tx);font-family:inherit;font-size:14.5px;font-weight:700;outline:none;transition:.15s;}
+.wt-ex-name-in:focus{border-color:var(--blue);}
+.wt-ex-del{flex-shrink:0;width:38px;height:38px;display:flex;align-items:center;justify-content:center;
+  border-radius:10px;border:1px solid var(--bd);background:var(--s1);color:var(--mut);cursor:pointer;transition:.15s;}
+.wt-ex-del:hover{color:var(--red);border-color:var(--red);}
+.wt-ex-del:active{transform:scale(.94);}
+/* 세부 운동 추가 */
+.wt-add-ex{width:100%;display:flex;align-items:center;justify-content:center;gap:6px;padding:13px;margin-bottom:14px;
+  border-radius:12px;border:1.5px dashed var(--bd);background:transparent;color:var(--blue);
+  font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;transition:.15s;}
+.wt-add-ex:hover{border-color:var(--blue);background:rgba(61,139,255,.06);}
+.wt-add-ex:active{transform:scale(.98);}
+.wt-add-max{text-align:center;font-size:12px;color:var(--mut);font-weight:600;padding:11px;margin-bottom:14px;
+  border-radius:12px;border:1px dashed var(--bd);}
+/* 루틴 이름 입력 (설정) */
+.wt-name-in{width:100%;padding:10px 12px;margin-bottom:10px;border-radius:10px;border:1px solid var(--bd);
+  background:var(--s2);color:var(--tx);font-family:inherit;font-size:14px;font-weight:700;outline:none;transition:.15s;}
+.wt-name-in:focus{border-color:var(--blue);}
+.wt-note-label{display:block;font-size:12px;font-weight:700;color:var(--mut);margin:2px 2px 6px;}
+.wt-note-label i{font-style:normal;font-weight:500;opacity:.75;}
+.wt-note-in{width:100%;padding:10px 12px;margin-bottom:6px;border-radius:10px;border:1px solid var(--bd);
+  background:var(--s2);color:var(--tx);font-family:inherit;font-size:13px;line-height:1.5;resize:vertical;
+  outline:none;transition:.15s;box-sizing:border-box;}
+.wt-note-in:focus{border-color:var(--blue);}
+.wt-set-emptyhint{font-size:12px;color:var(--mut);padding:2px 2px 8px;}
+.wt-rest-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:7px;}
+.wt-rest-no{font-family:'Oswald';font-size:15px;font-weight:600;color:var(--tx);}
+.wt-rest-row .wt-mfield{flex:0 0 130px;}
+.wt-rest-row .wt-mfield.sm input{text-align:center;}
+/* 세트 추가 · 줄이기 */
+.wt-set-ctrl{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:2px 0 6px;}
+.wt-set-ctrl-btn{display:flex;align-items:center;justify-content:center;gap:5px;padding:9px;border-radius:10px;
+  border:1px dashed var(--bd);background:transparent;color:var(--mut);font-family:inherit;font-size:12.5px;
+  font-weight:700;cursor:pointer;transition:.15s;}
+.wt-set-ctrl-btn.add{color:var(--blue);}
+.wt-set-ctrl-btn.add:hover{border-color:var(--blue);background:rgba(61,139,255,.06);}
+.wt-set-ctrl-btn:active{transform:scale(.97);}
+.wt-set-ctrl-btn:disabled{opacity:.35;cursor:default;}
+.wt-set-ctrl-btn:disabled:active{transform:none;}
 /* 타이머 */
 .wt-timer{position:fixed;left:0;right:0;bottom:0;max-width:480px;margin:0 auto;
   background:rgba(13,18,25,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--bd);
@@ -676,6 +719,14 @@ const Trash2 = p => /*#__PURE__*/React.createElement(Ic, p, /*#__PURE__*/React.c
   y1: "11",
   y2: "17"
 }));
+const Plus = p => /*#__PURE__*/React.createElement(Ic, p, /*#__PURE__*/React.createElement("path", {
+  d: "M5 12h14"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M12 5v14"
+}));
+const Minus = p => /*#__PURE__*/React.createElement(Ic, p, /*#__PURE__*/React.createElement("path", {
+  d: "M5 12h14"
+}));
 
 /* ── 기본 루틴 (트레이너 피드백) ── */
 const TEMPLATES = {
@@ -757,6 +808,33 @@ const buildProgram = key => TEMPLATES[key].ex.map(e => ({
     done: false
   }))
 }));
+const KEYS = ["A", "B", "C"];
+const MAX_EX = 8;
+const DEFAULT_NAMES = {
+  A: TEMPLATES.A.name,
+  B: TEMPLATES.B.name,
+  C: "전신 C"
+};
+const DEFAULT_NOTES = {
+  A: TEMPLATES.A.note,
+  B: TEMPLATES.B.note,
+  C: ""
+};
+// 세트 번호별 쉬는 시간(초) — [1세트, 2세트, 3세트, 4세트, 5세트+]. 모든 운동 공통.
+const DEFAULT_RESTS = ["80", "110", "110", "110", "110"];
+const newExercise = () => ({
+  n: "새 운동",
+  cue: "",
+  setup: "",
+  memo: "",
+  sets: [0, 1, 2].map(() => ({
+    tw: "",
+    tr: "",
+    w: "",
+    r: "",
+    done: false
+  }))
+});
 const todayStr = () => {
   const d = new Date();
   const p = x => String(x).padStart(2, "0");
@@ -778,13 +856,26 @@ if (SAVED.progs) {
     });
   } catch (err) {}
 }
+// 3번째 루틴(C) 슬롯이 없으면 빈 루틴으로 추가
+if (SAVED.progs && !SAVED.progs.C) SAVED.progs.C = [];
 function App() {
   const [active, setActive] = useState(SAVED.active || "A");
   const [date] = useState(todayStr());
   const [progs, setProgs] = useState(SAVED.progs || {
     A: buildProgram("A"),
-    B: buildProgram("B")
+    B: buildProgram("B"),
+    C: []
   });
+  const [names, setNames] = useState({
+    ...DEFAULT_NAMES,
+    ...(SAVED.names || {})
+  });
+  const [user, setUser] = useState(SAVED.user || "병민");
+  const [notes, setNotes] = useState({
+    ...DEFAULT_NOTES,
+    ...(SAVED.notes || {})
+  });
+  const [rests, setRests] = useState(Array.isArray(SAVED.rests) && SAVED.rests.length === 5 ? SAVED.rests.map(String) : DEFAULT_RESTS.slice());
   const [open, setOpen] = useState(0);
   const [history, setHistory] = useState(Array.isArray(SAVED.history) ? SAVED.history : []);
   const [showHist, setShowHist] = useState(false);
@@ -792,33 +883,47 @@ function App() {
   const [ioMode, setIoMode] = useState("none");
   const [ioText, setIoText] = useState("");
   const [toast, setToast] = useState("");
-  const [rest, setRest] = useState(80);
+  const [rest, setRest] = useState(Number(rests[0]) || 80);
   const [run, setRun] = useState(false);
   const tick = useRef(null);
+  const endAt = useRef(null); // 타이머 종료 시각(timestamp) — 앱 전환·화면 꺼짐에도 실제 시간 기준
 
   /* 자동 저장 */
   useEffect(() => {
     saveState({
       active,
       progs,
+      names,
+      notes,
+      rests,
+      user,
       history
     });
-  }, [active, progs, history]);
+  }, [active, progs, names, notes, rests, user, history]);
 
-  /* 타이머 */
+  /* 타이머 — 종료 시각(timestamp) 기준. 앱 전환·화면 꺼짐 후 돌아와도 실제 경과 시간이 반영됨 */
   useEffect(() => {
-    if (run) {
-      tick.current = setInterval(() => {
-        setRest(s => {
-          if (s <= 1) {
-            setRun(false);
-            return 0;
-          }
-          return s - 1;
-        });
-      }, 1000);
-    }
-    return () => clearInterval(tick.current);
+    if (!run) return;
+    if (!endAt.current) endAt.current = Date.now() + rest * 1000;
+    const update = () => {
+      const left = Math.max(0, Math.ceil((endAt.current - Date.now()) / 1000));
+      setRest(left);
+      if (left <= 0) {
+        setRun(false);
+        // 방금 끝난 경우에만 진동 (한참 뒤에 돌아온 경우엔 조용히)
+        if (Date.now() - endAt.current < 2000 && navigator.vibrate) navigator.vibrate([200, 100, 200]);
+      }
+    };
+    update();
+    tick.current = setInterval(update, 500);
+    document.addEventListener("visibilitychange", update);
+    window.addEventListener("focus", update);
+    return () => {
+      clearInterval(tick.current);
+      document.removeEventListener("visibilitychange", update);
+      window.removeEventListener("focus", update);
+      endAt.current = null;
+    };
   }, [run]);
   const flash = m => {
     setToast(m);
@@ -830,6 +935,10 @@ function App() {
     setIoText(enc(JSON.stringify({
       active,
       progs,
+      names,
+      notes,
+      rests,
+      user,
       history
     })));
     setIoMode("export");
@@ -841,7 +950,20 @@ function App() {
   const doImportApply = () => {
     try {
       const o = JSON.parse(dec(ioText.trim()));
-      if (o.progs) setProgs(o.progs);
+      if (o.progs) {
+        if (!o.progs.C) o.progs.C = [];
+        setProgs(o.progs);
+      }
+      if (o.names) setNames(prev => ({
+        ...prev,
+        ...o.names
+      }));
+      if (o.notes) setNotes(prev => ({
+        ...prev,
+        ...o.notes
+      }));
+      if (Array.isArray(o.rests) && o.rests.length === 5) setRests(o.rests.map(String));
+      if (typeof o.user === "string") setUser(o.user);
       if (o.active) setActive(o.active);
       if (Array.isArray(o.history)) setHistory(o.history);
       setIoMode("none");
@@ -870,37 +992,85 @@ function App() {
         if (!p[ei].sets[si].r) p[ei].sets[si].r = p[ei].sets[si].tr;
       }
     });
-    if (willDone) {
-      const restFor = si === 0 ? 80 : 110;
-      setRest(restFor);
-      setRun(true);
-    }
+    if (willDone) startTimer(getRest(si));
   };
-  const setCueCfg = (pk, exName, v) => {
+  const setCueCfg = (pk, ei, v) => {
     setProgs(prev => {
       const next = clone(prev);
-      const ex = next[pk].find(e => e.n === exName);
-      if (ex) ex.cue = v;
+      if (next[pk][ei]) next[pk][ei].cue = v;
       return next;
     });
   };
-  const setTargetCfg = (pk, exName, si, key, v) => {
+  const setTargetCfg = (pk, ei, si, key, v) => {
     setProgs(prev => {
       const next = clone(prev);
-      const ex = next[pk].find(e => e.n === exName);
-      if (ex && ex.sets[si]) ex.sets[si][key] = v;
+      if (next[pk][ei] && next[pk][ei].sets[si]) next[pk][ei].sets[si][key] = v;
       return next;
     });
   };
   const setMemo = (ei, v) => upd(p => {
     p[ei].memo = v;
   });
-  const setSetupCfg = (pk, exName, v) => {
+  const setSetupCfg = (pk, ei, v) => {
     setProgs(prev => {
       const next = clone(prev);
-      const ex = next[pk].find(e => e.n === exName);
-      if (ex) ex.setup = v;
+      if (next[pk][ei]) next[pk][ei].setup = v;
       return next;
+    });
+  };
+  const setName = (pk, v) => setNames(prev => ({
+    ...prev,
+    [pk]: v
+  }));
+  const setNote = (pk, v) => setNotes(prev => ({
+    ...prev,
+    [pk]: v
+  }));
+  const getRest = si => Number(rests[Math.min(si, rests.length - 1)]) || 0;
+  const setRestCfg = (i, v) => setRests(prev => {
+    const n = prev.slice();
+    n[i] = v.replace(/[^0-9]/g, "");
+    return n;
+  });
+  const startTimer = secs => {
+    endAt.current = Date.now() + secs * 1000;
+    setRest(secs);
+    setRun(true);
+  };
+  const renameExercise = (ei, v) => upd(p => {
+    p[ei].n = v;
+  });
+  const addExercise = () => {
+    if (progs[active].length >= MAX_EX) return;
+    const ni = progs[active].length;
+    upd(p => {
+      p.push(newExercise());
+    });
+    setOpen(ni);
+  };
+  const delExercise = ei => {
+    if (!window.confirm("이 운동을 삭제할까요? 관련 입력값도 함께 지워져요.")) return;
+    upd(p => {
+      p.splice(ei, 1);
+    });
+    setOpen(o => o === ei ? -1 : o > ei ? o - 1 : o);
+  };
+  const addSet = ei => upd(p => {
+    p[ei].sets.push({
+      tw: "",
+      tr: "",
+      w: "",
+      r: "",
+      done: false
+    });
+  });
+  const delLastSet = ei => {
+    const sets = progs[active][ei].sets;
+    if (sets.length <= 1) return;
+    const last = sets[sets.length - 1];
+    if ((last.w || last.done) && !window.confirm("마지막 세트를 삭제할까요?")) return;
+    upd(p => {
+      p[ei].sets.pop();
     });
   };
   const program = progs[active];
@@ -910,7 +1080,7 @@ function App() {
   const finish = () => {
     const snap = {
       date,
-      program: TEMPLATES[active].name,
+      program: names[active],
       ex: program.map(e => ({
         n: e.n,
         memo: e.memo || "",
@@ -955,7 +1125,7 @@ function App() {
     className: "wt-notch"
   })), /*#__PURE__*/React.createElement("div", {
     className: "wt-sub"
-  }, "\uBCD1\uBBFC\u2019s Tracker", /*#__PURE__*/React.createElement("span", {
+  }, user, "\u2019s Tracker", /*#__PURE__*/React.createElement("span", {
     className: "wt-dot"
   }, "\xB7"), /*#__PURE__*/React.createElement(Calendar, {
     size: 11,
@@ -971,14 +1141,16 @@ function App() {
     className: "wt-warn"
   }, "\u26A0\uFE0F \uC774 \uBE0C\uB77C\uC6B0\uC800\uC5D0\uC11C \uC800\uC7A5\uC774 \uB9C9\uD600 \uC788\uC5B4\uC694. \uC0AC\uD30C\uB9AC \uC0AC\uC0DD\uD65C \uBCF4\uD638 \uBAA8\uB4DC\uB97C \uB044\uAC70\uB098, \uD648 \uD654\uBA74\uC5D0 \uCD94\uAC00\uD55C \uC571\uC73C\uB85C \uC5F4\uBA74 \uAE30\uB85D\uC774 \uC720\uC9C0\uB429\uB2C8\uB2E4."), /*#__PURE__*/React.createElement("div", {
     className: "wt-seg"
-  }, ["A", "B"].map(k => /*#__PURE__*/React.createElement("button", {
+  }, KEYS.map(k => /*#__PURE__*/React.createElement("button", {
     key: k,
     className: "wt-seg-btn" + (active === k ? " on" : ""),
     onClick: () => {
       setActive(k);
       setOpen(0);
     }
-  }, "\uC804\uC2E0 ", k, active === k && /*#__PURE__*/React.createElement(Check, {
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "wt-seg-txt"
+  }, names[k]), active === k && /*#__PURE__*/React.createElement(Check, {
     size: 14,
     strokeWidth: 3,
     className: "wt-seg-chk"
@@ -986,7 +1158,7 @@ function App() {
     className: "wt-prog-row"
   }, /*#__PURE__*/React.createElement("span", {
     className: "wt-prog-name"
-  }, TEMPLATES[active].name), /*#__PURE__*/React.createElement("span", {
+  }, names[active]), /*#__PURE__*/React.createElement("span", {
     className: "wt-prog-count"
   }, doneSets, "/", totalSets, " \uC138\uD2B8 \xB7 ", pct, "%")), /*#__PURE__*/React.createElement("div", {
     className: "wt-bar"
@@ -1027,7 +1199,20 @@ function App() {
       className: "wt-chev"
     })), isOpen && /*#__PURE__*/React.createElement("div", {
       className: "wt-card-body"
-    }, e.sets.map((s, si) => /*#__PURE__*/React.createElement("div", {
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "wt-ex-edit"
+    }, /*#__PURE__*/React.createElement("input", {
+      className: "wt-ex-name-in",
+      value: e.n,
+      placeholder: "운동 이름",
+      onChange: ev => renameExercise(ei, ev.target.value)
+    }), /*#__PURE__*/React.createElement("button", {
+      className: "wt-ex-del",
+      onClick: () => delExercise(ei),
+      "aria-label": "운동 삭제"
+    }, /*#__PURE__*/React.createElement(Trash2, {
+      size: 15
+    }))), e.sets.map((s, si) => /*#__PURE__*/React.createElement("div", {
       key: si,
       className: "wt-set-row" + (s.done ? " done" : "")
     }, /*#__PURE__*/React.createElement("span", {
@@ -1052,7 +1237,22 @@ function App() {
     }, /*#__PURE__*/React.createElement(Check, {
       size: 16,
       strokeWidth: 3.2
-    })))), e.cue && /*#__PURE__*/React.createElement("div", {
+    })))), /*#__PURE__*/React.createElement("div", {
+      className: "wt-set-ctrl"
+    }, /*#__PURE__*/React.createElement("button", {
+      className: "wt-set-ctrl-btn",
+      onClick: () => delLastSet(ei),
+      disabled: e.sets.length <= 1
+    }, /*#__PURE__*/React.createElement(Minus, {
+      size: 14,
+      strokeWidth: 2.6
+    }), " \uC138\uD2B8 \uC904\uC774\uAE30"), /*#__PURE__*/React.createElement("button", {
+      className: "wt-set-ctrl-btn add",
+      onClick: () => addSet(ei)
+    }, /*#__PURE__*/React.createElement(Plus, {
+      size: 14,
+      strokeWidth: 2.6
+    }), " \uC138\uD2B8 \uCD94\uAC00")), e.cue && /*#__PURE__*/React.createElement("div", {
       className: "wt-cue"
     }, "\uD83D\uDCCB \uCF54\uCE58 \uD0A4\uC6CC\uB4DC: ", e.cue), /*#__PURE__*/React.createElement("div", {
       className: "wt-memo"
@@ -1065,9 +1265,19 @@ function App() {
       placeholder: "\uC608: \uBB34\uAC8C \uAC00\uBCBC\uC6E0\uC74C \uB2E4\uC74C\uC5D0 +5 / \uC67C\uCABD \uC5B4\uAE68 \uBED0\uADFC",
       onChange: ev => setMemo(ei, ev.target.value)
     }))));
-  }), /*#__PURE__*/React.createElement("div", {
+  }), program.length === 0 && /*#__PURE__*/React.createElement("div", {
+    className: "wt-empty"
+  }, "\uC544\uC9C1 \uC6B4\uB3D9\uC774 \uC5C6\uC5B4\uC694. \uC544\uB798\uC5D0\uC11C \uCD94\uAC00\uD574 \uBCF4\uC138\uC694."), program.length < MAX_EX ? /*#__PURE__*/React.createElement("button", {
+    className: "wt-add-ex",
+    onClick: addExercise
+  }, /*#__PURE__*/React.createElement(Plus, {
+    size: 16,
+    strokeWidth: 2.6
+  }), " \uC138\uBD80 \uC6B4\uB3D9 \uCD94\uAC00 (", program.length, "/", MAX_EX, ")") : /*#__PURE__*/React.createElement("div", {
+    className: "wt-add-max"
+  }, "\uC138\uBD80 \uC6B4\uB3D9\uC740 \uCD5C\uB300 ", MAX_EX, "\uAC1C\uAE4C\uC9C0\uC608\uC694 (", MAX_EX, "/", MAX_EX, ")"), notes[active] && /*#__PURE__*/React.createElement("div", {
     className: "wt-note"
-  }, "\uD83D\uDCA1 ", TEMPLATES[active].note), /*#__PURE__*/React.createElement("div", {
+  }, "\uD83D\uDCA1 ", notes[active]), /*#__PURE__*/React.createElement("div", {
     className: "wt-actions"
   }, /*#__PURE__*/React.createElement("button", {
     className: "wt-act",
@@ -1109,7 +1319,7 @@ function App() {
     className: "tb red",
     onClick: () => {
       setRun(false);
-      setRest(80);
+      setRest(getRest(0));
     }
   }, /*#__PURE__*/React.createElement(Square, {
     size: 15
@@ -1133,14 +1343,57 @@ function App() {
   }, "\uC644\uB8CC")), /*#__PURE__*/React.createElement("div", {
     className: "wt-modal-body"
   }, /*#__PURE__*/React.createElement("div", {
+    className: "wt-set-group"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "wt-set-group-h"
+  }, "내 이름"), /*#__PURE__*/React.createElement("input", {
+    className: "wt-name-in",
+    value: user,
+    placeholder: "이름을 입력하세요",
+    onChange: ev => setUser(ev.target.value)
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "wt-set-emptyhint"
+  }, "상단 헤더의 ‘…’s Tracker’ 문구에 반영돼요.")), /*#__PURE__*/React.createElement("div", {
+    className: "wt-set-group"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "wt-set-group-h"
+  }, "세트별 쉬는 시간 (초)"), /*#__PURE__*/React.createElement("div", {
+    className: "wt-set-emptyhint"
+  }, "세트를 완료하면 이 시간으로 타이머가 자동 시작돼요. 모든 운동 공통이에요."), [0, 1, 2, 3, 4].map(i => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: "wt-rest-row"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "wt-rest-no"
+  }, i === 4 ? "5세트+" : (i + 1) + "세트"), /*#__PURE__*/React.createElement("label", {
+    className: "wt-mfield sm"
+  }, /*#__PURE__*/React.createElement("input", {
+    value: rests[i],
+    inputMode: "numeric",
+    onChange: ev => setRestCfg(i, ev.target.value)
+  }), /*#__PURE__*/React.createElement("em", null, "초"))))), /*#__PURE__*/React.createElement("div", {
     className: "wt-set-hint"
-  }, "\uC14B\uC5C5(\uAE30\uAD6C \uC138\uD305)\xB7\uC138\uD2B8\uBCC4 \uAE30\uBCF8\uAC12\xB7\uCF54\uCE58 \uD0A4\uC6CC\uB4DC\uB97C \uC6B4\uB3D9\uB9C8\uB2E4 \uC800\uC7A5\uD574\uB46C\uC694. \uBC14\uAFB8\uBA74 \uC790\uB3D9 \uC801\uC6A9\uB429\uB2C8\uB2E4. (\uD53C\uB4DC\uBC31\uC774 \uBC14\uB00C\uBA74 \uC5EC\uAE30\uC11C \uC218\uC815)"), ["A", "B"].map(pk => /*#__PURE__*/React.createElement("div", {
+  }, "\uC14B\uC5C5(\uAE30\uAD6C \uC138\uD305)\xB7\uC138\uD2B8\uBCC4 \uAE30\uBCF8\uAC12\xB7\uCF54\uCE58 \uD0A4\uC6CC\uB4DC\uB97C \uC6B4\uB3D9\uB9C8\uB2E4 \uC800\uC7A5\uD574\uB46C\uC694. \uBC14\uAFB8\uBA74 \uC790\uB3D9 \uC801\uC6A9\uB429\uB2C8\uB2E4. (\uD53C\uB4DC\uBC31\uC774 \uBC14\uB00C\uBA74 \uC5EC\uAE30\uC11C \uC218\uC815)"), KEYS.map(pk => /*#__PURE__*/React.createElement("div", {
     key: pk,
     className: "wt-set-group"
   }, /*#__PURE__*/React.createElement("div", {
     className: "wt-set-group-h"
-  }, "\uC804\uC2E0 ", pk), progs[pk].map(e => /*#__PURE__*/React.createElement("div", {
-    key: e.n,
+  }, "\uB8E8\uD2F4 ", pk, " \uC774\uB984"), /*#__PURE__*/React.createElement("input", {
+    className: "wt-name-in",
+    value: names[pk],
+    placeholder: "\uB8E8\uD2F4 \uC774\uB984",
+    onChange: ev => setName(pk, ev.target.value)
+  }), /*#__PURE__*/React.createElement("label", {
+    className: "wt-note-label"
+  }, "\uD83D\uDCA1 \uB8E8\uD2F4 \uC124\uBA85 \u00B7 \uBA54\uBAA8 ", /*#__PURE__*/React.createElement("i", null, "(\uBA54\uC778 \uD654\uBA74 \uD558\uB2E8\uC5D0 \uD45C\uC2DC)")), /*#__PURE__*/React.createElement("textarea", {
+    className: "wt-note-in",
+    value: notes[pk],
+    rows: 3,
+    placeholder: "\uC608: \uC138\uD2B8 \uC9C4\uD589\uB420\uC218\uB85D \uC911\uB7C9 \u2191 / 1~2\uC138\uD2B8\uB294 \uC6CC\uBC0D\uC5C5",
+    onChange: ev => setNote(pk, ev.target.value)
+  }), progs[pk].length === 0 && /*#__PURE__*/React.createElement("div", {
+    className: "wt-set-emptyhint"
+  }, "\uC544\uC9C1 \uC6B4\uB3D9\uC774 \uC5C6\uC5B4\uC694. \uBA54\uC778 \uD654\uBA74\uC5D0\uC11C \uCD94\uAC00\uD558\uC138\uC694."), progs[pk].map((e, ei) => /*#__PURE__*/React.createElement("div", {
+    key: ei,
     className: "wt-set-machine"
   }, /*#__PURE__*/React.createElement("span", {
     className: "wt-set-mname"
@@ -1155,7 +1408,7 @@ function App() {
     value: e.setup,
     rows: 2,
     placeholder: "\uC608: \uC758\uC790 6 / \uD314 8 / \uADF8\uB9BD \uAC80\uC9C0 \uB9C1",
-    onChange: ev => setSetupCfg(pk, e.n, ev.target.value)
+    onChange: ev => setSetupCfg(pk, ei, ev.target.value)
   })), /*#__PURE__*/React.createElement("div", {
     className: "wt-set-def"
   }, /*#__PURE__*/React.createElement("span", {
@@ -1170,13 +1423,13 @@ function App() {
   }, /*#__PURE__*/React.createElement("input", {
     value: s.tw,
     inputMode: "text",
-    onChange: ev => setTargetCfg(pk, e.n, si, "tw", ev.target.value)
+    onChange: ev => setTargetCfg(pk, ei, si, "tw", ev.target.value)
   }), /*#__PURE__*/React.createElement("em", null, "kg")), /*#__PURE__*/React.createElement("label", {
     className: "wt-mfield sm"
   }, /*#__PURE__*/React.createElement("input", {
     value: s.tr,
     inputMode: "numeric",
-    onChange: ev => setTargetCfg(pk, e.n, si, "tr", ev.target.value)
+    onChange: ev => setTargetCfg(pk, ei, si, "tr", ev.target.value)
   }), /*#__PURE__*/React.createElement("em", null, "\uD68C"))))), /*#__PURE__*/React.createElement("div", {
     className: "wt-set-cue"
   }, /*#__PURE__*/React.createElement("span", {
@@ -1185,7 +1438,7 @@ function App() {
     value: e.cue,
     rows: 2,
     placeholder: "\uC608: \uACAC\uAC11\uACE8 \uBC8C\uC5B4\uC9C0\uC9C0 \uC54A\uAC8C / \uD314\uAFC8\uCE58 \uB108\uBB34 \uD3B4\uC9C0 \uC54A\uAC8C",
-    onChange: ev => setCueCfg(pk, e.n, ev.target.value)
+    onChange: ev => setCueCfg(pk, ei, ev.target.value)
   })))))), /*#__PURE__*/React.createElement("div", {
     className: "wt-set-group"
   }, /*#__PURE__*/React.createElement("div", {
