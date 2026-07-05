@@ -1120,6 +1120,15 @@ function App() {
       ts: Date.now()
     };
     setHistory([snap, ...history].slice(0, 60));
+    setProgs(prev => {
+      const next = clone(prev);
+      next[active].forEach(e => {
+        e.sets.forEach(s => {
+          if (s.w) s.tw = s.w;
+        });
+      });
+      return next;
+    });
     setRun(false);
     flash("오늘 운동 기록 저장 완료 💪");
   };
