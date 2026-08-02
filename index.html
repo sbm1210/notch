@@ -45,7 +45,7 @@ body{font-family:'Noto Sans KR',system-ui,sans-serif;}
 .wt-sub .wt-dot{margin:0 1px;opacity:.6;}
 /* 세그먼트 */
 .wt-warn{font-size:12px;line-height:1.5;color:#ffd9a0;background:rgba(255,154,60,.1);border:1px solid rgba(255,154,60,.3);border-radius:11px;padding:10px 13px;margin-bottom:12px;}
-.wt-seg{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:13px;}
+.wt-seg{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:13px;}
 .wt-seg-btn{position:relative;padding:10px 20px 10px 8px;border-radius:12px;border:1.5px solid var(--bd);
   background:var(--s1);color:var(--mut);font-family:inherit;font-size:14px;font-weight:700;
   cursor:pointer;transition:.18s;overflow:hidden;}
@@ -809,17 +809,19 @@ const buildProgram = key => TEMPLATES[key].ex.map(e => ({
     done: false
   }))
 }));
-const KEYS = ["A", "B", "C"];
+const KEYS = ["A", "B", "C", "D"];
 const MAX_EX = 8;
 const DEFAULT_NAMES = {
   A: TEMPLATES.A.name,
   B: TEMPLATES.B.name,
-  C: "전신 C"
+  C: "전신 C",
+  D: "전신 D"
 };
 const DEFAULT_NOTES = {
   A: TEMPLATES.A.note,
   B: TEMPLATES.B.note,
-  C: ""
+  C: "",
+  D: ""
 };
 // 세트 번호별 쉬는 시간(초) — [1세트, 2세트, 3세트, 4세트, 5세트+]. 모든 운동 공통.
 const DEFAULT_RESTS = ["80", "110", "110", "110", "110"];
@@ -846,7 +848,7 @@ const SAVED = loadState() || {};
 // 구버전 호환: 저장된 progs 에 sv(머신 세팅 배열)가 있으면 setup 텍스트로 이전
 if (SAVED.progs) {
   try {
-    ["A", "B"].forEach(pk => {
+    KEYS.forEach(pk => {
       (SAVED.progs[pk] || []).forEach(e => {
         if (Array.isArray(e.sv) && e.sv.length) {
           const txt = e.sv.map(m => `${m.label} ${m.val}`).join(" / ");
@@ -857,15 +859,17 @@ if (SAVED.progs) {
     });
   } catch (err) {}
 }
-// 3번째 루틴(C) 슬롯이 없으면 빈 루틴으로 추가
+// 새 루틴 슬롯이 없으면 기존 저장 데이터에 빈 루틴으로 추가
 if (SAVED.progs && !SAVED.progs.C) SAVED.progs.C = [];
+if (SAVED.progs && !SAVED.progs.D) SAVED.progs.D = [];
 function App() {
   const [active, setActive] = useState(SAVED.active || "A");
   const [date] = useState(todayStr());
   const [progs, setProgs] = useState(SAVED.progs || {
     A: buildProgram("A"),
     B: buildProgram("B"),
-    C: []
+    C: [],
+    D: []
   });
   const [names, setNames] = useState({
     ...DEFAULT_NAMES,
@@ -979,6 +983,7 @@ function App() {
       const o = JSON.parse(dec(ioText.trim()));
       if (o.progs) {
         if (!o.progs.C) o.progs.C = [];
+        if (!o.progs.D) o.progs.D = [];
         setProgs(o.progs);
       }
       if (o.names) setNames(prev => ({
