@@ -54,8 +54,15 @@ body{font-family:'Noto Sans KR',system-ui,sans-serif;}
   color:#fff;box-shadow:0 0 0 1px rgba(61,139,255,.4),0 6px 20px -8px rgba(61,139,255,.6);}
 .wt-seg-chk{position:absolute;top:6px;right:8px;color:var(--blue);}
 /* 진행 */
-.wt-prog-row{display:flex;justify-content:space-between;align-items:baseline;margin:2px 4px 6px;}
-.wt-prog-name{font-size:18px;font-weight:700;}
+.wt-prog-row{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:2px 4px 6px;}
+.wt-prog-edit{display:flex;align-items:center;gap:5px;min-width:0;flex:1;}
+.wt-prog-name-in{min-width:0;width:100%;background:transparent;border:1px solid transparent;border-radius:8px;
+  color:var(--tx);font-family:inherit;font-size:18px;font-weight:700;padding:4px 6px;outline:none;}
+.wt-prog-name-in:focus{background:var(--s1);border-color:var(--blue);}
+.wt-move-btn{flex-shrink:0;width:30px;height:30px;display:grid;place-items:center;border-radius:8px;
+  border:1px solid var(--bd);background:var(--s1);color:var(--mut);font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;}
+.wt-move-btn:disabled{opacity:.28;cursor:default;}
+.wt-move-btn:not(:disabled):active{transform:scale(.92);}
 .wt-prog-count{font-size:12px;color:var(--mut);font-weight:600;font-family:'Oswald';}
 .wt-bar{height:5px;background:var(--s2);border-radius:99px;overflow:hidden;margin:0 2px 14px;}
 .wt-bar-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--lime));border-radius:99px;transition:width .35s;}
@@ -163,6 +170,10 @@ body{font-family:'Noto Sans KR',system-ui,sans-serif;}
   border-radius:10px;border:1px solid var(--bd);background:var(--s1);color:var(--mut);cursor:pointer;transition:.15s;}
 .wt-ex-del:hover{color:var(--red);border-color:var(--red);}
 .wt-ex-del:active{transform:scale(.94);}
+.wt-ex-move{flex-shrink:0;width:38px;height:38px;display:grid;place-items:center;border-radius:10px;
+  border:1px solid var(--bd);background:var(--s1);color:var(--blue);font-family:inherit;font-size:18px;font-weight:700;cursor:pointer;}
+.wt-ex-move:disabled{opacity:.28;color:var(--mut);cursor:default;}
+.wt-ex-move:not(:disabled):active{transform:scale(.92);}
 /* 세부 운동 추가 */
 .wt-add-ex{width:100%;display:flex;align-items:center;justify-content:center;gap:6px;padding:13px;margin-bottom:14px;
   border-radius:12px;border:1.5px dashed var(--bd);background:transparent;color:var(--blue);
@@ -765,7 +776,41 @@ const TEMPLATES = {
   },
   B: {
     name: "전신 B",
-    note: "데드리프트 메인 데이. 키워드만 잘 보면 금방 기억돼요.",
+    note: "2026. 7. 28. 트레이너 프로그램 · 각 운동 15회 × 3세트",
+    ex: [{
+      n: "라잉 레그 컬",
+      setup: "발 6 / 무릎 3",
+      s: [["30", "15"], ["30", "15"], ["30", "15"]],
+      cue: "허벅지를 앞 패드에 밀착 / 허리가 뒤로 꺾이지 않게"
+    }, {
+      n: "레그 익스텐션",
+      setup: "발 6 / 무릎 3",
+      s: [["40", "15"], ["40", "15"], ["40", "15"]],
+      cue: "무릎을 바짝 펴 올리기보다 앞쪽으로 뻗기 / 다 뻗으면 허벅지를 살짝 띄우는 느낌으로 대퇴직근 활성"
+    }, {
+      n: "펙 덱 플라이",
+      setup: "의자 6 / 팔 3 / 손잡이 자유",
+      s: [["15", "15"], ["15", "15"], ["15", "15"]],
+      cue: "어깨가 으쓱 올라가지 않게 / 팔꿈치가 바닥 쪽으로 회전하지 않고 처음 세팅 각도 유지"
+    }, {
+      n: "스트레이트 바 케이블 암 풀 다운",
+      setup: "거치 2",
+      s: [["20", "15"], ["20", "15"], ["20", "15"]],
+      cue: "당길 때: 상체 체스트 업 + 무게 중심 살짝 앞 / 바를 보낼 때: 상체 누르기 + 무게 중심 살짝 뒤"
+    }, {
+      n: "케이블 와이드 그립 시티드 로우",
+      setup: "거치 21",
+      s: [["40", "15"], ["40", "15"], ["40", "15"]],
+      cue: "견갑골이 으쓱하듯 너무 올라가지 않게 / 팔꿈치를 벌리면서 견갑골을 중앙으로 조이기"
+    }, {
+      n: "벤트 오버 래터럴 레이즈",
+      s: [["2", "15"], ["2", "15"], ["2", "15"]],
+      cue: "손등이 서로 마주보게 잡고 팔꿈치를 약간 머리 쪽으로 보내 수평으로 당기기"
+    }]
+  },
+  C: {
+    name: "전신 C",
+    note: "기존 전신 B 프로그램 · 데드리프트 메인 데이",
     ex: [{
       n: "핀 데드리프트",
       setup: "거치대 16 / 안전바 12",
@@ -794,6 +839,37 @@ const TEMPLATES = {
       s: [["10", "8"], ["15", "8"], ["20", "8"]],
       cue: ""
     }]
+  },
+  D: {
+    name: "팔 특집",
+    note: "2026. 6. 30. 팔 특집 · 시간 되면 개인 운동 때도 팔 운동 복습",
+    ex: [{
+      n: "덤벨 컬",
+      s: [["4", "12"], ["6", "10"], ["8", "8"]],
+      cue: ""
+    }, {
+      n: "로프 케이블 해머 컬",
+      setup: "거치 제일 아래",
+      s: [["15", "12"], ["20", "10"], ["25", "8"]],
+      cue: "덤벨로도 가능 / 이완할 때 ‘밀어내다’를 기억"
+    }, {
+      n: "바벨 컬",
+      s: [["10", "12"], ["15", "10"], ["20", "8"]],
+      cue: ""
+    }, {
+      n: "로프 케이블 프레스 다운",
+      setup: "거치 1",
+      s: [["20", "12"], ["25", "10"], ["30", "8"]],
+      cue: "방향은 앞쪽으로 / 수축이 완료된 후 팔 전체를 몸통 쪽으로 아주 조금만 가까이"
+    }, {
+      n: "덤벨 오버헤드 익스텐션",
+      s: [["8", "12"], ["10", "10"], ["12", "8"]],
+      cue: "몸통에 가까운 위팔을 인위적으로 회전시키지 않기 / 팔꿈치가 직각보다 너무 굽혀지지 않게"
+    }, {
+      n: "라잉 트라이셉스 익스텐션",
+      s: [["10", "12"], ["15", "10"], ["20", "10"]],
+      cue: "오버헤드 익스텐션은 바 사용 / 팔이 회전되지 않게 / 팔꿈치를 직각보다 너무 굽히지 않기 / 얼굴 쪽을 향하는 운동이므로 안전 주의"
+    }]
   }
 };
 const buildProgram = key => TEMPLATES[key].ex.map(e => ({
@@ -814,17 +890,20 @@ const MAX_EX = 8;
 const DEFAULT_NAMES = {
   A: TEMPLATES.A.name,
   B: TEMPLATES.B.name,
-  C: "전신 C",
-  D: "전신 D"
+  C: TEMPLATES.C.name,
+  D: TEMPLATES.D.name
 };
 const DEFAULT_NOTES = {
   A: TEMPLATES.A.note,
   B: TEMPLATES.B.note,
-  C: "",
-  D: ""
+  C: TEMPLATES.C.note,
+  D: TEMPLATES.D.note
 };
 // 세트 번호별 쉬는 시간(초) — [1세트, 2세트, 3세트, 4세트, 5세트+]. 모든 운동 공통.
 const DEFAULT_RESTS = ["80", "110", "110", "110", "110"];
+const B_PROGRAM_REVISION = "2026-07-28-b";
+const ARMS_PROGRAM_REVISION = "2026-07-28-arms";
+const PROGRAM_REVISION = "2026-07-28-fullbody-names";
 const newExercise = () => ({
   n: "새 운동",
   cue: "",
@@ -844,7 +923,36 @@ const todayStr = () => {
   return `${d.getFullYear()}. ${p(d.getMonth() + 1)}. ${p(d.getDate())}`;
 };
 const fmt = s => `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
-const SAVED = loadState() || {};
+const migrateProgram = state => {
+  if (!state || !state.progs || state.programRevision === PROGRAM_REVISION) return state;
+  const bProgramAlreadyMigrated = state.programRevision === B_PROGRAM_REVISION || state.programRevision === ARMS_PROGRAM_REVISION;
+  if (!bProgramAlreadyMigrated) {
+    const previousB = clone(state.progs.B || buildProgram("C"));
+    const previousBNote = state.notes && state.notes.B || TEMPLATES.C.note;
+    state.progs.C = previousB;
+    state.progs.B = buildProgram("B");
+    state.notes = {
+      ...(state.notes || {}),
+      B: TEMPLATES.B.note,
+      C: previousBNote
+    };
+  }
+  if (state.programRevision !== ARMS_PROGRAM_REVISION) state.progs.D = buildProgram("D");
+  state.names = {
+    ...(state.names || {}),
+    A: TEMPLATES.A.name,
+    B: TEMPLATES.B.name,
+    C: TEMPLATES.C.name,
+    D: TEMPLATES.D.name
+  };
+  state.notes = {
+    ...(state.notes || {}),
+    D: TEMPLATES.D.note
+  };
+  state.programRevision = PROGRAM_REVISION;
+  return state;
+};
+const SAVED = migrateProgram(loadState() || {}) || {};
 // 구버전 호환: 저장된 progs 에 sv(머신 세팅 배열)가 있으면 setup 텍스트로 이전
 if (SAVED.progs) {
   try {
@@ -859,17 +967,17 @@ if (SAVED.progs) {
     });
   } catch (err) {}
 }
-// 새 루틴 슬롯이 없으면 기존 저장 데이터에 빈 루틴으로 추가
-if (SAVED.progs && !SAVED.progs.C) SAVED.progs.C = [];
-if (SAVED.progs && !SAVED.progs.D) SAVED.progs.D = [];
+// 새 루틴 슬롯이 없으면 기본 루틴으로 보완
+if (SAVED.progs && !SAVED.progs.C) SAVED.progs.C = buildProgram("C");
+if (SAVED.progs && !SAVED.progs.D) SAVED.progs.D = buildProgram("D");
 function App() {
   const [active, setActive] = useState(SAVED.active || "A");
   const [date] = useState(todayStr());
   const [progs, setProgs] = useState(SAVED.progs || {
     A: buildProgram("A"),
     B: buildProgram("B"),
-    C: [],
-    D: []
+    C: buildProgram("C"),
+    D: buildProgram("D")
   });
   const [names, setNames] = useState({
     ...DEFAULT_NAMES,
@@ -896,6 +1004,7 @@ function App() {
   /* 자동 저장 */
   useEffect(() => {
     saveState({
+      programRevision: PROGRAM_REVISION,
       active,
       progs,
       names,
@@ -938,6 +1047,7 @@ function App() {
   const dec = s => decodeURIComponent(escape(atob(s)));
   const doExport = () => {
     const code = enc(JSON.stringify({
+      programRevision: PROGRAM_REVISION,
       active,
       progs,
       names,
@@ -980,10 +1090,10 @@ function App() {
   };
   const doImportApply = () => {
     try {
-      const o = JSON.parse(dec(ioText.trim()));
+      const o = migrateProgram(JSON.parse(dec(ioText.trim())));
       if (o.progs) {
-        if (!o.progs.C) o.progs.C = [];
-        if (!o.progs.D) o.progs.D = [];
+        if (!o.progs.C) o.progs.C = buildProgram("C");
+        if (!o.progs.D) o.progs.D = buildProgram("D");
         setProgs(o.progs);
       }
       if (o.names) setNames(prev => ({
@@ -1054,6 +1164,31 @@ function App() {
     ...prev,
     [pk]: v
   }));
+  const moveRoutine = dir => {
+    const fromIndex = KEYS.indexOf(active);
+    const toIndex = fromIndex + dir;
+    if (toIndex < 0 || toIndex >= KEYS.length) return;
+    const to = KEYS[toIndex];
+    const movedName = names[active];
+    setProgs(prev => {
+      const next = clone(prev);
+      [next[active], next[to]] = [next[to], next[active]];
+      return next;
+    });
+    setNames(prev => ({
+      ...prev,
+      [active]: prev[to],
+      [to]: prev[active]
+    }));
+    setNotes(prev => ({
+      ...prev,
+      [active]: prev[to],
+      [to]: prev[active]
+    }));
+    setActive(to);
+    setOpen(0);
+    flash(`${movedName} 루틴을 ${to} 위치로 이동했어요`);
+  };
   const setNote = (pk, v) => setNotes(prev => ({
     ...prev,
     [pk]: v
@@ -1072,6 +1207,14 @@ function App() {
   const renameExercise = (ei, v) => upd(p => {
     p[ei].n = v;
   });
+  const moveExercise = (ei, dir) => {
+    const ni = ei + dir;
+    if (ni < 0 || ni >= progs[active].length) return;
+    upd(p => {
+      [p[ei], p[ni]] = [p[ni], p[ei]];
+    });
+    setOpen(ni);
+  };
   const addExercise = () => {
     if (progs[active].length >= MAX_EX) return;
     const ni = progs[active].length;
@@ -1197,9 +1340,24 @@ function App() {
     className: "wt-seg-chk"
   })))), /*#__PURE__*/React.createElement("div", {
     className: "wt-prog-row"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "wt-prog-name"
-  }, names[active]), /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "wt-prog-edit"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "wt-move-btn",
+    onClick: () => moveRoutine(-1),
+    disabled: KEYS.indexOf(active) === 0,
+    "aria-label": "루틴을 왼쪽 위치로 이동"
+  }, "\u2190"), /*#__PURE__*/React.createElement("input", {
+    className: "wt-prog-name-in",
+    value: names[active],
+    onChange: ev => setName(active, ev.target.value),
+    "aria-label": "현재 루틴 이름"
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "wt-move-btn",
+    onClick: () => moveRoutine(1),
+    disabled: KEYS.indexOf(active) === KEYS.length - 1,
+    "aria-label": "루틴을 오른쪽 위치로 이동"
+  }, "\u2192")), /*#__PURE__*/React.createElement("span", {
     className: "wt-prog-count"
   }, doneSets, "/", totalSets, " \uC138\uD2B8 \xB7 ", pct, "%")), /*#__PURE__*/React.createElement("div", {
     className: "wt-bar"
@@ -1247,6 +1405,16 @@ function App() {
       value: e.n,
       placeholder: "운동 이름",
       onChange: ev => renameExercise(ei, ev.target.value)
+    }), /*#__PURE__*/React.createElement("button", {
+      className: "wt-ex-move",
+      onClick: () => moveExercise(ei, -1),
+      disabled: ei === 0,
+      "aria-label": "운동 위로 이동"
+    }, "\u2191"), /*#__PURE__*/React.createElement("button", {
+      className: "wt-ex-move",
+      onClick: () => moveExercise(ei, 1),
+      disabled: ei === program.length - 1,
+      "aria-label": "운동 아래로 이동"
     }), /*#__PURE__*/React.createElement("button", {
       className: "wt-ex-del",
       onClick: () => delExercise(ei),
